@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberShield IDS</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Settings Button -->
+        <div class="settings-container">
+            <button class="settings-btn">⚙️</button>
+            <div class="settings-menu">
+                <ul>
+                    <li id="view-logs">📄 View Logs</li>
+                    <li id="user-management">👤 User Management</li>
+                </ul>
+            </div>
+        </div>
+
+        <img src="assets/logo.png" alt="CyberShield Logo" class="logo">
+        <section class="alert-section">
+            <h2>Threat Detection</h2>
+            <div class="threat-card">
+                <p><strong>🔥 Suspicious Activity Detected!</strong></p>
+                <p>Packet Analysis: <span class="highlight">High Anomaly Score</span></p>
+                <button class="resolve-btn">Resolve</button>
+            </div>
+        </section>
+
+        <section class="stats">
+            <h3>Monitoring Status</h3>
+            <p>Packets Monitored: <span id="packet-count">3,205</span></p>
+            <p>Threats Detected: <span id="threat-count">5</span></p>
+            <button class="activate-btn">Activate Defense Mode</button>
+        </section>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <script src="js/popup.js"></script>
+</body>
+</html>

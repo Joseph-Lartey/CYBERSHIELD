@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "CyberShield",
+  "version": "1.0",
+  "description": "An Intrusion Detection System (IDS) extension for cybersecurity monitoring.",
+  "permissions": ["storage", "activeTab", "scripting"],
+
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "assets/logo-16.png",
+      "48": "assets/logo-48.png",
+      "128": "assets/logo-128.png"
+    }
+  },
+
+  "background": {
+    "service_worker": "js/background.js"
+  },
+
+  "icons": {
+    "16": "assets/logo-16.png",
+    "48": "assets/logo-48.png",
+    "128": "assets/logo-128.png"
+  }
+}
