@@ -1,0 +1,10 @@
+{"ip": "malware-fake.com", "action": "Tab closed", "severity": "High", "time": "2025-04-09T01:26:07.654Z"}
+{"ip": "malware-fake.com", "action": "Tab closed", "severity": "High", "time": "2025-04-09T01:26:12.927Z"}
+{"ip": "malware-fake.com", "action": "Tab closed", "severity": "High", "time": "2025-04-09T01:26:27.777Z"}
+{"ip": "malware-fake.com", "action": "Tab closed", "severity": "High", "time": "2025-04-09T01:26:32.718Z"}
+{"ip": "malware-fake.com", "action": "Tab closed", "severity": "High", "time": "2025-04-09T01:26:37.808Z"}
+{"ip": "malware-fake.com", "action": "Tab closed", "severity": "High", "time": "2025-04-09T01:27:02.801Z"}
+{"ip": "malware-fake.com", "action": "Tab closed", "severity": "High", "time": "2025-04-09T01:27:12.640Z"}
+{"ip": "malware-fake.com", "action": "Tab closed", "severity": "High", "time": "2025-04-09T01:27:27.588Z"}
+{"ip": "malware-fake.com", "action": "Tab closed", "severity": "High", "time": "2025-04-09T01:29:02.663Z"}
+{"ip": "malware-fake.com", "action": "Tab closed", "severity": "High", "time": "2025-04-09T01:29:32.686Z"}

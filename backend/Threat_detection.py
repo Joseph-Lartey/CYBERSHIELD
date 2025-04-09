@@ -1,46 +1,33 @@
-# ===============================
-# UPDATED THREAT DETECTION SYSTEM
-# ===============================
-
 import pandas as pd
 import joblib
 import psutil
-import platform
 import os
+import time
 import requests
-from scapy.all import sniff, send
+from scapy.all import sniff
 from scapy.layers.inet import IP, TCP, UDP
 from scapy.layers.dns import DNS
 from scapy.packet import Raw
-from datetime import datetime
-import time
 
-# Load trained models
+# Load ML models
 scaler = joblib.load("ml_models/scaler.joblib")
 pca = joblib.load("ml_models/pca.joblib")
 model = joblib.load("ml_models/rf_best_model.joblib")
 
-# Features used during model training
 expected_features = [
-    "network_threats",
-    "network_dns",
-    "network_http",
-    "network_connections",
-    "apis",
-    "registry_total"
+    "network_threats", "network_dns", "network_http",
+    "network_connections", "apis", "registry_total"
 ]
 
-# Global cache to prevent duplicate alerts
+# Avoid duplicate alerts
 alert_cache = {}
 
-# ------------------------------------------------------------------------
 # Process Monitoring
-# ------------------------------------------------------------------------
 def get_running_processes_count():
     return len(list(psutil.process_iter()))
 
 def detect_suspicious_processes():
-    suspicious_processes = []
+    suspicious = []
     for process in psutil.process_iter(['pid', 'name', 'exe', 'cpu_percent', 'memory_percent']):
         try:
             name = process.info.get('name', 'Unknown')
@@ -48,21 +35,16 @@ def detect_suspicious_processes():
             cpu = process.info.get('cpu_percent', 0)
             memory = process.info.get('memory_percent', 0)
 
-            if (name not in ["Python", "Code Helper", "Google Chrome", "Safari", "Finder", "WindowServer"]
-                and cpu > 10 and memory > 5):
-
+            if name not in ["Python", "Google Chrome", "Safari", "Finder", "WindowServer"] and cpu > 10 and memory > 5:
                 if name in alert_cache and (time.time() - alert_cache[name]) < 5:
                     continue
-
                 alert_cache[name] = time.time()
-                suspicious_processes.append((name, path, cpu, memory))
+                suspicious.append((name, path, cpu, memory))
         except:
             continue
-    return suspicious_processes
+    return suspicious
 
-# ------------------------------------------------------------------------
-# Feature Extraction
-# ------------------------------------------------------------------------
+# Packet Feature Extraction
 def extract_features(packet):
     features = {
         "network_threats": 0,
@@ -79,10 +61,9 @@ def extract_features(packet):
         features["network_connections"] += 1
     if DNS in packet:
         features["network_dns"] = 1
-
     if Raw in packet:
         raw_payload = packet[Raw].load
-        print(f"Raw payload (debug): {raw_payload}")
+        print(f"Raw payload: {raw_payload}")
         payload_str = raw_payload.decode(errors="ignore").lower()
         if "http" in payload_str:
             features["network_http"] = 1
@@ -92,9 +73,7 @@ def extract_features(packet):
     print(f"🧐 Extracted Features: {features}")
     return features
 
-# ------------------------------------------------------------------------
-# Threat Detection and Alert API Trigger
-# ------------------------------------------------------------------------
+# Threat Detection Pipeline
 def detect_threat(packet):
     print(f"\n📦 Captured Packet:\n{packet.summary()}")
     print(packet.show(dump=True))
@@ -109,38 +88,185 @@ def detect_threat(packet):
             df[col] = 0
     df = df[expected_features]
 
-    scaled_data = scaler.transform(df)
-    pca_data = pca.transform(scaled_data)
-
-    prediction_proba = model.predict_proba(pca_data)[0][1]
-    print(f"🔎 Model probability: {prediction_proba:.4f}")
-
-    threshold = 0.4
-    prediction = 1 if prediction_proba >= threshold else 0
+    scaled = scaler.transform(df)
+    reduced = pca.transform(scaled)
+    proba = model.predict_proba(reduced)[0][1]
+    print(f"🔎 Threat Probability: {proba:.4f}")
 
     suspicious_processes = detect_suspicious_processes()
 
-    if prediction == 1 or suspicious_processes:
+    if proba >= 0.4 or suspicious_processes:
         payload = {
             "ip": packet[IP].src if IP in packet else "unknown",
             "features": features,
-            "probability": float(prediction_proba),
-            "suspicious_processes": suspicious_processes
+            "probability": float(proba),
+            "suspicious_processes": suspicious_processes,
+            "source": "scapy"
         }
         try:
-            response = requests.post("http://localhost:5001/alert", json=payload)
-            print(f"📤 Sent alert to Alerting Subsystem: {response.status_code}")
+            res = requests.post("http://localhost:5001/alert", json=payload)
+            print(f"📤 Alert sent to Alerting Subsystem: {res.status_code}")
         except Exception as e:
-            print(f"❌ Failed to send alert: {e}")
+            print(f"❌ Could not send alert: {e}")
     else:
-        print(f"✅ Safe Packet: {features}")
+        print("✅ Packet is safe.")
 
-# ------------------------------------------------------------------------
 # Start Packet Sniffing
-# ------------------------------------------------------------------------
 iface_name = "en0"
-print(f"🔍 Starting CyberShield Threat Detection on interface: {iface_name}")
+print(f"🔍 Starting packet sniffing on interface: {iface_name}")
 sniff(iface=iface_name, prn=detect_threat, store=False)
+
+
+
+
+
+
+
+
+
+# # ===============================
+# # UPDATED THREAT DETECTION SYSTEM
+# # ===============================
+
+# import pandas as pd
+# import joblib
+# import psutil
+# import platform
+# import os
+# import requests
+# from scapy.all import sniff, send
+# from scapy.layers.inet import IP, TCP, UDP
+# from scapy.layers.dns import DNS
+# from scapy.packet import Raw
+# from datetime import datetime
+# import time
+
+# # Load trained models
+# scaler = joblib.load("ml_models/scaler.joblib")
+# pca = joblib.load("ml_models/pca.joblib")
+# model = joblib.load("ml_models/rf_best_model.joblib")
+
+# # Features used during model training
+# expected_features = [
+#     "network_threats",
+#     "network_dns",
+#     "network_http",
+#     "network_connections",
+#     "apis",
+#     "registry_total"
+# ]
+
+# # Global cache to prevent duplicate alerts
+# alert_cache = {}
+
+# # ------------------------------------------------------------------------
+# # Process Monitoring
+# # ------------------------------------------------------------------------
+# def get_running_processes_count():
+#     return len(list(psutil.process_iter()))
+
+# def detect_suspicious_processes():
+#     suspicious_processes = []
+#     for process in psutil.process_iter(['pid', 'name', 'exe', 'cpu_percent', 'memory_percent']):
+#         try:
+#             name = process.info.get('name', 'Unknown')
+#             path = process.info.get('exe', 'Unknown')
+#             cpu = process.info.get('cpu_percent', 0)
+#             memory = process.info.get('memory_percent', 0)
+
+#             if (name not in ["Python", "Code Helper", "Google Chrome", "Safari", "Finder", "WindowServer"]
+#                 and cpu > 10 and memory > 5):
+
+#                 if name in alert_cache and (time.time() - alert_cache[name]) < 5:
+#                     continue
+
+#                 alert_cache[name] = time.time()
+#                 suspicious_processes.append((name, path, cpu, memory))
+#         except:
+#             continue
+#     return suspicious_processes
+
+# # ------------------------------------------------------------------------
+# # Feature Extraction
+# # ------------------------------------------------------------------------
+# def extract_features(packet):
+#     features = {
+#         "network_threats": 0,
+#         "network_dns": 0,
+#         "network_http": 0,
+#         "network_connections": 0,
+#         "apis": get_running_processes_count(),
+#         "registry_total": 0
+#     }
+
+#     if IP in packet:
+#         features["network_connections"] = 1
+#     if TCP in packet or UDP in packet:
+#         features["network_connections"] += 1
+#     if DNS in packet:
+#         features["network_dns"] = 1
+
+#     if Raw in packet:
+#         raw_payload = packet[Raw].load
+#         print(f"Raw payload (debug): {raw_payload}")
+#         payload_str = raw_payload.decode(errors="ignore").lower()
+#         if "http" in payload_str:
+#             features["network_http"] = 1
+#         if "malware" in payload_str or "attack" in payload_str:
+#             features["network_threats"] = 1
+
+#     print(f"🧐 Extracted Features: {features}")
+#     return features
+
+# # ------------------------------------------------------------------------
+# # Threat Detection and Alert API Trigger
+# # ------------------------------------------------------------------------
+# def detect_threat(packet):
+#     print(f"\n📦 Captured Packet:\n{packet.summary()}")
+#     print(packet.show(dump=True))
+
+#     features = extract_features(packet)
+#     if not features:
+#         return
+
+#     df = pd.DataFrame([features])
+#     for col in expected_features:
+#         if col not in df.columns:
+#             df[col] = 0
+#     df = df[expected_features]
+
+#     scaled_data = scaler.transform(df)
+#     pca_data = pca.transform(scaled_data)
+
+#     prediction_proba = model.predict_proba(pca_data)[0][1]
+#     print(f"🔎 Model probability: {prediction_proba:.4f}")
+
+#     threshold = 0.4
+#     prediction = 1 if prediction_proba >= threshold else 0
+
+#     suspicious_processes = detect_suspicious_processes()
+
+#     if prediction == 1 or suspicious_processes:
+#         payload = {
+#             "ip": packet[IP].src if IP in packet else "unknown",
+#             "features": features,
+#             "probability": float(prediction_proba),
+#             "suspicious_processes": suspicious_processes
+#         }
+#         try:
+#             response = requests.post("http://localhost:5001/alert", json=payload)
+#             print(f"📤 Sent alert to Alerting Subsystem: {response.status_code}")
+#         except Exception as e:
+#             print(f"❌ Failed to send alert: {e}")
+#     else:
+#         print(f"✅ Safe Packet: {features}")
+
+# # ------------------------------------------------------------------------
+# # Start Packet Sniffing
+# # ------------------------------------------------------------------------
+# iface_name = "en0"
+# print(f"🔍 Starting CyberShield Threat Detection on interface: {iface_name}")
+# sniff(iface=iface_name, prn=detect_threat, store=False)
 
 
 
