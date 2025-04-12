@@ -12,7 +12,6 @@
     "tabs",
     "notifications"
   ],
-
   "host_permissions": [
     "<all_urls>"
   ],
@@ -35,5 +34,16 @@
     "16": "assets/logo-16.png",
     "48": "assets/logo-48.png",
     "128": "assets/logo-128.png"
-  }
+  },
+
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "assets/logo-16.png",
+        "assets/logo-48.png",
+        "assets/logo-128.png"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ]
 }

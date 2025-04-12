@@ -8,3 +8,7 @@
 {"ip": "malware-fake.com", "action": "Tab closed", "severity": "High", "time": "2025-04-09T01:27:27.588Z"}
 {"ip": "malware-fake.com", "action": "Tab closed", "severity": "High", "time": "2025-04-09T01:29:02.663Z"}
 {"ip": "malware-fake.com", "action": "Tab closed", "severity": "High", "time": "2025-04-09T01:29:32.686Z"}
+{"ip": "test-malware.com", "action": "Tab closed", "severity": "High", "time": "2025-04-09T00:00:00"}
+{"ip": "malware-fake.com", "action": "Tab closed", "severity": "High", "time": "2025-04-12T02:23:14.542Z"}
+{"ip": "malware-fake.com", "action": "Tab closed", "severity": "High", "time": "2025-04-12T02:37:46.757Z"}
+{"ip": "malware-fake.com", "action": "Tab closed", "severity": "High", "time": "2025-04-12T02:39:56.755Z"}

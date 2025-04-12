@@ -4,9 +4,9 @@ export function handleIncident(alert) {
     if (alert.severity === "High") {
       chrome.notifications.create({
         type: "basic",
-        iconUrl: "assets/logo-128.png",
+        iconUrl: chrome.runtime.getURL("assets/logo-128.png"),
         title: "🚨 High Threat Detected!",
-        message: `Auto-blocking tab connected to ${alert.ip}`,
+        message: `Auto-blocking tab connected...`,
         priority: 2
       });
   
