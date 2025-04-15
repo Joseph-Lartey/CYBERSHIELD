@@ -3,8 +3,10 @@ from datetime import datetime
 import os
 import json
 import time
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
 log_file_path = os.path.abspath("alerts_log.txt")
 incident_log_path = os.path.abspath("incident_log.txt")
@@ -13,7 +15,7 @@ incident_log_path = os.path.abspath("incident_log.txt")
 recent_alerts = {}
 
 def classify_severity(probability):
-    if probability >= 0.90:
+    if probability >= 0.80:
         return "High"
     elif probability >= 0.70:
         return "Medium"
@@ -47,12 +49,15 @@ def receive_alert():
         "processes": suspicious_processes
     }
 
+    print(f"⚠️ New alert received - IP: {ip}, Probability: {probability}, Severity: {severity}")
+
     try:
         with open(log_file_path, "a") as f:
             f.write(json.dumps(alert) + "\n")
         print(f"🔔 Logged {severity} alert from {ip} via {source}")
         return jsonify({"message": "Alert received and logged", "severity": severity}), 200
     except Exception as e:
+        print(f"❌ Error logging alert: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
 @app.route('/latest-alert', methods=['GET'])
@@ -62,8 +67,11 @@ def latest_alert():
             lines = f.readlines()
             if not lines:
                 return jsonify({})
-            return jsonify(json.loads(lines[-1]))
+            latest = json.loads(lines[-1])
+            print(f"🔍 Latest alert requested: {latest.get('severity')} severity from {latest.get('ip')}")
+            return jsonify(latest)
     except Exception as e:
+        print(f"❌ Error retrieving latest alert: {str(e)}")
         return jsonify({"error": str(e)})
 
 @app.route('/incident-log', methods=['POST'])
@@ -75,7 +83,17 @@ def receive_incident_log():
         print(f"📒 Incident response logged: {data}")
         return jsonify({"message": "Incident response logged"}), 200
     except Exception as e:
+        print(f"❌ Error logging incident: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(port=5001)
+    # Create empty log files if they don't exist
+    for path in [log_file_path, incident_log_path]:
+        if not os.path.exists(path):
+            with open(path, "w") as f:
+                pass
+    
+    print(f"🚀 Alert service starting on port 5001")
+    print(f"📝 Logging alerts to: {log_file_path}")
+    print(f"📝 Logging incidents to: {incident_log_path}")
+    app.run(port=5001, debug=True)

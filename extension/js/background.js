@@ -1,18 +1,26 @@
 import { handleIncident } from "./incident_handler.js";
 
+console.log("🔧 CyberShield extension background script loading...");
+
+// Track the latest alert we've processed
+let lastAlertTimestamp = null;
+
 /**
- * 1) Capture outgoing requests and send to detection API
- *    BUT skip requests to 127.0.0.1:5002 (our own analyze endpoint)
- *    to avoid infinite loops or self-capture.
+ * Capture outgoing requests and send to detection API
  */
 chrome.webRequest.onBeforeRequest.addListener(
   (details) => {
-    // Skip if request is going to detection API itself
-    if (details.url.includes("127.0.0.1:5002") || details.url.includes("localhost:5002")) {
-      return; // Do nothing
+    // Skip if request is going to our own detection API or alert service
+    if (details.url.includes("127.0.0.1:5002") || 
+        details.url.includes("localhost:5002") ||
+        details.url.includes("127.0.0.1:5001") ||
+        details.url.includes("localhost:5001")) {
+      return; // Do nothing for our own services
     }
 
-    // Otherwise, build a packet
+    console.log(`🌐 Capturing request to: ${details.url}`);
+
+    // Build a packet
     const packet = {
       url: details.url,
       method: details.method,
@@ -26,14 +34,13 @@ chrome.webRequest.onBeforeRequest.addListener(
       body: JSON.stringify(packet)
     })
     .then(res => {
-      // In case detection_api returns JSON
       return res.json().catch(() => ({})); 
     })
     .then(data => {
-      console.log("Analyze API Response:", data);
+      console.log("🔍 Detection API response:", data);
     })
     .catch(err => {
-      console.error("Analyze fetch error:", err);
+      console.error("❌ Detection API error:", err);
     });
   },
   { urls: ["<all_urls>"] },
@@ -41,67 +48,52 @@ chrome.webRequest.onBeforeRequest.addListener(
 );
 
 /**
- * 2) Poll for the latest alert from the alert service every 5 seconds
- *    and handle only new, high-severity alerts from the extension.
+ * Poll for alerts every 5 seconds
  */
-let lastAlertTimestamp = null;
-setInterval(() => {
+function checkForAlerts() {
+  console.log("🔔 Checking for new alerts...");
+  
   fetch("http://127.0.0.1:5001/latest-alert")
     .then(res => res.json())
     .then(alert => {
+      console.log("📊 Latest alert:", alert);
+      
+      // Check if this is a new alert from our extension
       if (
         alert && 
         alert.source === "extension" && 
         alert.timestamp !== lastAlertTimestamp
       ) {
+        console.log("🆕 New alert detected!");
+        
         // Mark this alert as handled
         lastAlertTimestamp = alert.timestamp;
-
-        // Trigger the incident handler
+        
+        // Process the alert
+        console.log(`⚠️ Processing ${alert.severity} severity alert`);
         handleIncident(alert);
+      } else {
+        console.log("✅ No new alerts to process");
       }
     })
-    .catch(err => console.error("Polling error:", err));
-}, 5000);
+    .catch(err => {
+      console.error("❌ Alert polling error:", err);
+    });
+}
 
-console.log("🔧 background.js loaded successfully");
+// Initial alert check
+setTimeout(checkForAlerts, 2000);
 
+// Set up recurring alert checks
+setInterval(checkForAlerts, 5000);
 
+// Extension startup notification
+chrome.notifications.create({
+  type: "basic",
+  iconUrl: chrome.runtime.getURL("assets/logo-128.png"),
+  title: "🛡️ CyberShield Active",
+  message: "Real-time protection is now enabled",
+  priority: 0
+});
 
-// import { handleIncident } from './incident_handler.js';
-
-// // Capture outgoing requests and send to detection API
-// chrome.webRequest.onBeforeRequest.addListener(
-//   (details) => {
-//     // 1) If the request is to localhost:5002, skip
-//     if (details.url.includes("localhost:5002") || details.url.includes("127.0.0.1:5002")) {
-//       return; 
-//     }
-
-//     // 2) Otherwise, proceed
-//     const packet = {
-//       url: details.url,
-//       method: details.method,
-//       timestamp: Date.now()
-//     };
-
-//     fetch("http://127.0.0.1:5002/analyze", {
-//       method: "POST",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify(packet)
-//     });
-//   },
-//   { urls: ["<all_urls>"] },
-//   ["requestBody"]
-// );
-
-// // Poll for alerts every 5 seconds
-// setInterval(() => {
-//   fetch("http://http://127.0.0.1:5001/latest-alert")
-//     .then(res => res.json())
-//     .then(alert => {
-//       if (alert && alert.source === "extension") {
-//         handleIncident(alert);
-//       }
-//     });
-// }, 5000);
+console.log("✅ CyberShield background script loaded successfully");

@@ -112,7 +112,7 @@ def detect_threat(packet):
         print("✅ Packet is safe.")
 
 # Start Packet Sniffing
-iface_name = "en0"
+iface_name = "Wi-Fi"
 print(f"🔍 Starting packet sniffing on interface: {iface_name}")
 sniff(iface=iface_name, prn=detect_threat, store=False)
 
