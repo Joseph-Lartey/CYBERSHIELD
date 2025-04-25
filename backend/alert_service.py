@@ -113,7 +113,8 @@ if __name__ == "__main__":
     print(f"🚀 Alert service starting on port 5001")
     print(f"📝 Logging alerts to: {log_file_path}")
     print(f"📝 Logging incidents to: {incident_log_path}")
-    app.run(port=5001, debug=True)
+    app.run(host="0.0.0.0", port=5001, debug=True)
+
 
 
 
