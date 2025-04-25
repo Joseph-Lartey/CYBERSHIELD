@@ -4,3 +4,5 @@ scapy
 pandas
 joblib
 psutil
+flask-cors
+scikit-learn
