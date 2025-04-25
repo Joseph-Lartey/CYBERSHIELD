@@ -1,144 +1,141 @@
-/* Ensure popup has a proper size */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #131722;
-    color: #ffffff;
-    width: 350px;  /* Ensure a fixed width */
-    height: 450px; /* Ensure a fixed height */
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    position: relative;
+  margin: 0;
+  padding: 0;
+  background-color: #11141d;
+  color: #ffffff;
+  font-family: 'Segoe UI', sans-serif;
+  width: 320px;
+  height: 300px; 
 }
 
-/* Center everything */
-.container {
-    text-align: center;
-    width: 100%;
-    height: 100%;
+.popup-container {
+  padding: 15px;
 }
 
-/* CyberShield Logo */
 .logo {
-    width: 60%;
-    height: auto;
-    display: block;
-    margin: 0 auto 10px;
+  width: 140px;
+  height: 40px;
 }
 
-/* Header */
-h1 {
-    font-size: 20px;
-    color: #ff3b3b;
-    margin-bottom: 15px;
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
 }
 
-/* Threat Alert Box */
-.alert-section {
-    background-color: #292d3e;
-    padding: 10px;
-    border-radius: 10px;
-    border-left: 5px solid #ff3b3b;
-    margin-bottom: 10px;
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+  margin: 0 8px;
 }
 
-.threat-card {
-    background: rgba(255, 59, 59, 0.2);
-    padding: 10px;
-    border-radius: 10px;
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
 }
 
-.highlight {
-    color: #ffcc00;
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0;
+  right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
 }
 
-/* Buttons */
-button {
-    cursor: pointer;
-    padding: 8px;
-    border: none;
-    border-radius: 5px;
-    font-weight: bold;
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 14px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
 }
 
-.resolve-btn {
-    background-color: #ff3b3b;
-    color: white;
-    width: 100%;
+input:checked + .slider {
+  background-color: #ff3b3b;
 }
 
-.activate-btn {
-    background: linear-gradient(90deg, #ff3b3b, #ff8c00);
-    color: white;
-    width: 100%;
+input:checked + .slider:before {
+  transform: translateX(18px);
 }
 
-/* Monitoring Status */
-.stats {
-    background-color: #0f172a;
-    padding: 10px;
-    border-radius: 10px;
+#protection-status {
+  font-weight: 600;
+  color: #ffd600;
 }
 
-/* Custom floating notification */
-.notification {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    background-color: #292d3e;
-    color: white;
-    padding: 10px 15px;
-    border-radius: 5px;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-    box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
+.settings-icon-wrapper {
+  position: relative;
+  margin-left: 8px;
 }
 
-/* Show notification */
-.show {
-    opacity: 1;
+.settings-icon {
+  font-size: 22px;
+  color: white;
+  cursor: pointer;
+  vertical-align: middle;
 }
 
-/* Settings button */
-.settings-container {
-    position: absolute;
-    top: 5px;
-    right: 10px;
+.settings-dropdown {
+  display: none;
+  position: absolute;
+  top: 28px;
+  right: 0;
+  background-color: #1f2330;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  width: 140px;
+  z-index: 10;
 }
 
-.settings-btn {
-    background: none;
-    border: none;
-    font-size: 20px;
-    color: white;
-    cursor: pointer;
-    margin-top: 35%;
+.settings-dropdown ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-/* Dropdown menu */
-.settings-menu {
-    display: none;
-    position: absolute;
-    top: 30px;
-    right: 0;
-    background: #292d3e;
-    border-radius: 5px;
-    box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.2);
-    width: 150px;
+.settings-dropdown li {
+  padding: 10px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  border-bottom: 1px solid #333;
 }
 
-.settings-menu ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+.settings-dropdown li:last-child {
+  border-bottom: none;
 }
 
-.settings-menu ul li {
-    padding: 10px;
-    cursor: pointer;
-    border-bottom: 1px solid #404859;
+.settings-dropdown li:hover {
+  background-color: #ff3b3b;
 }
 
-.settings-menu ul li:hover {
-    background: #ff3b3b;
+.status-card {
+  background-color: #1e2230;
+  padding: 20px;
+  margin-top: 20px;
+  border-left: 5px solid #ff3b3b;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.status-card h2 {
+  color: #ffd600;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.status-card p {
+  margin: 5px 0;
+  font-size: 14px;
 }

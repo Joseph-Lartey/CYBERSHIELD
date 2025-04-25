@@ -10,6 +10,7 @@
     "scripting",
     "webRequest",
     "tabs",
+    "downloads",
     "notifications"
   ],
   "host_permissions": [
@@ -24,23 +25,24 @@
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
-      "16": "assets/logo-16.png",
-      "48": "assets/logo-48.png",
-      "128": "assets/logo-128.png"
+
+      "16": "assets/icon.png",
+      "48": "assets/icon.png",
+      "128": "assets/icon.png"
     }
   },
 
   "icons": {
-    "16": "assets/logo-16.png",
-    "48": "assets/logo-48.png",
-    "128": "assets/logo-128.png"
+      "16": "assets/icon.png",
+      "48": "assets/icon.png",
+      "128": "assets/icon.png"
   },
 
   "web_accessible_resources": [
     {
       "resources": [
         "assets/logo-16.png",
-        "assets/logo-48.png",
+        "assets/logo-128.png",
         "assets/logo-128.png"
       ],
       "matches": ["<all_urls>"]

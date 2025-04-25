@@ -44,7 +44,7 @@ def analyze_packet():
     
     # Force high probability for known malware sites for testing
     if is_malware:
-        prob = max(prob, 0.85)  # Ensure it gets classified as high severity
+        prob = max(prob, 0.90)  # Ensure it gets classified as high severity
 
     print(f"URL: {url}, Probability: {prob}, Is Malware: {is_malware}")
 

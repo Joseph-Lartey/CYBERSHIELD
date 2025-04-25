@@ -1,44 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CyberShield IDS</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>CyberShield</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </head>
 <body>
-    <div class="container">
-        <!-- Settings Button -->
-        <div class="settings-container">
-            <button class="settings-btn">⚙️</button>
-            <div class="settings-menu">
+    <div class="popup-container">
+        <div class="top-bar">
+            <img src="assets/logo-128.png" alt="CyberShield Logo" class="logo"/>
+            <label class="switch">
+                <input type="checkbox" id="protection-toggle" checked />
+                <span class="slider"></span>
+            </label>
+            <span id="protection-status">Active</span>
+
+            <div class="settings-icon-wrapper">
+              <svg class="settings-icon" xmlns="http://www.w3.org/2000/svg" height="22" viewBox="0 0 512 512" fill="white">
+                <path d="M487.4 315.7l-28.7-16.6a191.1 191.1 0 000-86.2l28.7-16.6a16.2 16.2 0 007.4-21.6l-45.3-78.5a16.2 16.2 0 00-21.6-7.4l-28.6 16.5a192.4 192.4 0 00-74.7-43.1V32a16 16 0 00-16-16h-90.5a16 16 0 00-16 16v33.1a192.4 192.4 0 00-74.7 43.1L84.2 68.8a16.2 16.2 0 00-21.6 7.4L17.3 154.7a16.2 16.2 0 007.4 21.6l28.7 16.6a191.1 191.1 0 000 86.2l-28.7 16.6a16.2 16.2 0 00-7.4 21.6l45.3 78.5a16.2 16.2 0 0021.6 7.4l28.6-16.5a192.4 192.4 0 0074.7 43.1V480a16 16 0 0016 16h90.5a16 16 0 0016-16v-33.1a192.4 192.4 0 0074.7-43.1l28.6 16.5a16.2 16.2 0 0021.6-7.4l45.3-78.5a16.2 16.2 0 00-7.4-21.6zM256 336a80 80 0 1180-80 80 80 0 01-80 80z"/>
+              </svg>              
+              <div class="settings-dropdown" id="settings-menu">
                 <ul>
-                    <li id="view-logs">📄 View Logs</li>
-                    <li id="user-management">👤 User Management</li>
+                  <li id="toggle-alerts">Disable Alerts</li> 
+
+                  <li id="export-logs">Export Logs</li>
                 </ul>
+              </div>
             </div>
         </div>
 
-        <img src="assets/logo.png" alt="CyberShield Logo" class="logo">
-        <section class="alert-section">
-            <h2>Threat Detection</h2>
-            <div class="threat-card">
-                <p><strong>🔥 Suspicious Activity Detected!</strong></p>
-                <p>Packet Analysis: <span class="highlight">High Anomaly Score</span></p>
-                <button class="resolve-btn">Resolve</button>
-            </div>
-        </section>
-
-        <section class="stats">
-            <h3>Monitoring Status</h3>
-            <p>Packets Monitored: <span id="packet-count">3,205</span></p>
-            <p>Threats Detected: <span id="threat-count">5</span></p>
-            <button class="activate-btn">Activate Defense Mode</button>
-        </section>
+        <div class="status-card">
+            <h2>System Status</h2>
+            <p>Threats Detected: <span id="packet-count">0</span>
+            <p>Packets Monitored: <span id="threat-count">0</span>
+        </div>
     </div>
-
-    <!-- Notification -->
-    <div id="notification" class="notification"></div>
 
     <script src="js/popup.js"></script>
 </body>
