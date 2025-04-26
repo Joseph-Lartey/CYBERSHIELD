@@ -35,8 +35,8 @@ export function handleIncident(alert) {
       });
     });
     
-    // Log the incident
-    fetch("http://localhost:5001/incident-log", {
+    // 🛡️ Secure logging to CyberShield backend (updated URL)
+    fetch("https://cybershield.ink/incident-log", {  // 🚀 UPDATED
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -53,6 +53,7 @@ export function handleIncident(alert) {
     console.log(`ℹ️ ${alert.severity} severity alert - no action taken`);
   }
 }
+
 
 
 

@@ -32,15 +32,14 @@ function incrementThreatCount() {
   });
 }
 
-// 🚨 HERE: Update detection API POST
+// 🌐 Updated to HTTPS CyberShield domain
 chrome.webRequest.onBeforeRequest.addListener(
   async (details) => {
     const enabled = await isProtectionEnabled();
     if (!enabled) return;
 
     if (
-      details.url.includes("16.171.55.86:5002") || 
-      details.url.includes("16.171.55.86:5001")
+      details.url.includes("cybershield.ink") // prevent looping
     ) {
       return;
     }
@@ -53,7 +52,7 @@ chrome.webRequest.onBeforeRequest.addListener(
       timestamp: Date.now()
     };
 
-    fetch("http://16.171.55.86:5002/analyze", {  // ⬅️ Updated to public IP
+    fetch("https://cybershield.ink/analyze", {  // 🚀 UPDATED
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(packet)
@@ -71,7 +70,7 @@ chrome.webRequest.onBeforeRequest.addListener(
   ["requestBody"]
 );
 
-// ✅ Check alerts
+// 🚨 Check for alerts securely
 function checkForAlerts() {
   isProtectionEnabled().then((enabled) => {
     if (!enabled) {
@@ -79,7 +78,7 @@ function checkForAlerts() {
       return;
     }
 
-    fetch("http://16.171.55.86:5001/latest-alert")  // ⬅️ Updated to public IP
+    fetch("https://cybershield.ink/latest-alert")  // 🚀 UPDATED
       .then((res) => res.json())
       .then((alert) => {
         if (
