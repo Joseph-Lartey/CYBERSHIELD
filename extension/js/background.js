@@ -4,25 +4,22 @@ console.log("🔧 CyberShield extension background script loading...");
 
 let lastAlertTimestamp = null;
 
-// ✅ Check if protection is ON
 function isProtectionEnabled() {
   return new Promise((resolve) => {
     chrome.storage.local.get("protectionEnabled", ({ protectionEnabled }) => {
-      resolve(protectionEnabled !== false); // default is ON
+      resolve(protectionEnabled !== false);
     });
   });
 }
 
-// ✅ Check if alerts are ON
 function areAlertsEnabled() {
   return new Promise((resolve) => {
     chrome.storage.local.get("alertsEnabled", ({ alertsEnabled }) => {
-      resolve(alertsEnabled !== false); // default is ON
+      resolve(alertsEnabled !== false);
     });
   });
 }
 
-// ✅ Increment stats
 function incrementPacketCount() {
   chrome.storage.local.get("packetCount", ({ packetCount }) => {
     chrome.storage.local.set({ packetCount: (packetCount || 0) + 1 });
@@ -35,19 +32,17 @@ function incrementThreatCount() {
   });
 }
 
-// ✅ Capture outgoing requests and send to detection API
+// 🚨 HERE: Update detection API POST
 chrome.webRequest.onBeforeRequest.addListener(
   async (details) => {
     const enabled = await isProtectionEnabled();
     if (!enabled) return;
 
     if (
-      details.url.includes("127.0.0.1:5002") ||
-      details.url.includes("localhost:5002") ||
-      details.url.includes("127.0.0.1:5001") ||
-      details.url.includes("localhost:5001")
+      details.url.includes("16.171.55.86:5002") || 
+      details.url.includes("16.171.55.86:5001")
     ) {
-      return; // skip own API requests
+      return;
     }
 
     console.log(`🌐 Capturing request to: ${details.url}`);
@@ -58,7 +53,7 @@ chrome.webRequest.onBeforeRequest.addListener(
       timestamp: Date.now()
     };
 
-    fetch("http://127.0.0.1:5002/analyze", {
+    fetch("http://16.171.55.86:5002/analyze", {  // ⬅️ Updated to public IP
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(packet)
@@ -76,7 +71,7 @@ chrome.webRequest.onBeforeRequest.addListener(
   ["requestBody"]
 );
 
-// ✅ Polling alerts every 5s, conditionally
+// ✅ Check alerts
 function checkForAlerts() {
   isProtectionEnabled().then((enabled) => {
     if (!enabled) {
@@ -84,7 +79,7 @@ function checkForAlerts() {
       return;
     }
 
-    fetch("http://127.0.0.1:5001/latest-alert")
+    fetch("http://16.171.55.86:5001/latest-alert")  // ⬅️ Updated to public IP
       .then((res) => res.json())
       .then((alert) => {
         if (
@@ -95,10 +90,8 @@ function checkForAlerts() {
           lastAlertTimestamp = alert.timestamp;
           console.log("🆕 New alert received");
 
-          // Incident response always happens
           handleIncident(alert);
 
-          // Only track and alert for HIGH threats
           if (alert.severity === "High") {
             incrementThreatCount();
 
@@ -128,11 +121,9 @@ function checkForAlerts() {
   });
 }
 
-// ✅ Start polling loop
 setTimeout(checkForAlerts, 2000);
 setInterval(checkForAlerts, 5000);
 
-// ✅ Show "active" notification on load
 chrome.storage.local.get("protectionEnabled", ({ protectionEnabled }) => {
   if (protectionEnabled !== false) {
     chrome.notifications.create({
@@ -145,7 +136,6 @@ chrome.storage.local.get("protectionEnabled", ({ protectionEnabled }) => {
   }
 });
 
-// ✅ Message listener for toggle events
 chrome.runtime.onMessage.addListener((message) => {
   if (message.type === "TOGGLE_PROTECTION") {
     const isOn = message.enabled;
@@ -165,6 +155,177 @@ chrome.runtime.onMessage.addListener((message) => {
 });
 
 
+
+
+////////////////////////////////////////////
+
+// import { handleIncident } from "./incident_handler.js";
+
+// console.log("🔧 CyberShield extension background script loading...");
+
+// let lastAlertTimestamp = null;
+
+// // ✅ Check if protection is ON
+// function isProtectionEnabled() {
+//   return new Promise((resolve) => {
+//     chrome.storage.local.get("protectionEnabled", ({ protectionEnabled }) => {
+//       resolve(protectionEnabled !== false); // default is ON
+//     });
+//   });
+// }
+
+// // ✅ Check if alerts are ON
+// function areAlertsEnabled() {
+//   return new Promise((resolve) => {
+//     chrome.storage.local.get("alertsEnabled", ({ alertsEnabled }) => {
+//       resolve(alertsEnabled !== false); // default is ON
+//     });
+//   });
+// }
+
+// // ✅ Increment stats
+// function incrementPacketCount() {
+//   chrome.storage.local.get("packetCount", ({ packetCount }) => {
+//     chrome.storage.local.set({ packetCount: (packetCount || 0) + 1 });
+//   });
+// }
+
+// function incrementThreatCount() {
+//   chrome.storage.local.get("threatCount", ({ threatCount }) => {
+//     chrome.storage.local.set({ threatCount: (threatCount || 0) + 1 });
+//   });
+// }
+
+// // ✅ Capture outgoing requests and send to detection API
+// chrome.webRequest.onBeforeRequest.addListener(
+//   async (details) => {
+//     const enabled = await isProtectionEnabled();
+//     if (!enabled) return;
+
+//     if (
+//       details.url.includes("127.0.0.1:5002") ||
+//       details.url.includes("localhost:5002") ||
+//       details.url.includes("127.0.0.1:5001") ||
+//       details.url.includes("localhost:5001")
+//     ) {
+//       return; // skip own API requests
+//     }
+
+//     console.log(`🌐 Capturing request to: ${details.url}`);
+
+//     const packet = {
+//       url: details.url,
+//       method: details.method,
+//       timestamp: Date.now()
+//     };
+
+//     fetch("http://127.0.0.1:5002/analyze", {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify(packet)
+//     })
+//       .then((res) => res.json().catch(() => ({})))
+//       .then((data) => {
+//         console.log("🔍 Detection API response:", data);
+//         incrementPacketCount();
+//       })
+//       .catch((err) => {
+//         console.error("❌ Detection API error:", err);
+//       });
+//   },
+//   { urls: ["<all_urls>"] },
+//   ["requestBody"]
+// );
+
+// // ✅ Polling alerts every 5s, conditionally
+// function checkForAlerts() {
+//   isProtectionEnabled().then((enabled) => {
+//     if (!enabled) {
+//       console.log("🛑 Skipping alert check: protection disabled");
+//       return;
+//     }
+
+//     fetch("http://127.0.0.1:5001/latest-alert")
+//       .then((res) => res.json())
+//       .then((alert) => {
+//         if (
+//           alert &&
+//           alert.source === "extension" &&
+//           alert.timestamp !== lastAlertTimestamp
+//         ) {
+//           lastAlertTimestamp = alert.timestamp;
+//           console.log("🆕 New alert received");
+
+//           // Incident response always happens
+//           handleIncident(alert);
+
+//           // Only track and alert for HIGH threats
+//           if (alert.severity === "High") {
+//             incrementThreatCount();
+
+//             areAlertsEnabled().then((alertsOn) => {
+//               if (alertsOn) {
+//                 chrome.notifications.create({
+//                   type: "basic",
+//                   iconUrl: chrome.runtime.getURL("assets/logo-128.png"),
+//                   title: `🚨 High Threat Detected`,
+//                   message: `A high severity threat was identified.`,
+//                   priority: 2
+//                 });
+//               } else {
+//                 console.log("🔕 Notification suppressed: alerts disabled");
+//               }
+//             });
+//           } else {
+//             console.log(`ℹ️ ${alert.severity} severity threat ignored for alert.`);
+//           }
+//         } else {
+//           console.log("✅ No new alert to process");
+//         }
+//       })
+//       .catch((err) => {
+//         console.error("❌ Alert polling error:", err);
+//       });
+//   });
+// }
+
+// // ✅ Start polling loop
+// setTimeout(checkForAlerts, 2000);
+// setInterval(checkForAlerts, 5000);
+
+// // ✅ Show "active" notification on load
+// chrome.storage.local.get("protectionEnabled", ({ protectionEnabled }) => {
+//   if (protectionEnabled !== false) {
+//     chrome.notifications.create({
+//       type: "basic",
+//       iconUrl: chrome.runtime.getURL("assets/logo-128.png"),
+//       title: "🛡️ CyberShield Active",
+//       message: "Real-time protection is now enabled",
+//       priority: 0
+//     });
+//   }
+// });
+
+// // ✅ Message listener for toggle events
+// chrome.runtime.onMessage.addListener((message) => {
+//   if (message.type === "TOGGLE_PROTECTION") {
+//     const isOn = message.enabled;
+
+//     chrome.notifications.create({
+//       type: "basic",
+//       iconUrl: chrome.runtime.getURL("assets/logo-128.png"),
+//       title: isOn ? "🛡️ CyberShield Activated" : "🛑 CyberShield Disabled",
+//       message: isOn
+//         ? "Real-time protection is back on."
+//         : "All monitoring and alerts have been turned off.",
+//       priority: 1
+//     });
+
+//     console.log(`🔄 Extension toggled ${isOn ? "ON" : "OFF"}`);
+//   }
+// });
+
+////////////////////////////////////////////////////////////
 
 
 
