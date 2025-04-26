@@ -34,10 +34,10 @@ def test_extract_features():
         assert key in features
 
 # ✅ Test 4: Full Threat Detection (Mocked)
-@patch('threat_detection.scaler')
-@patch('threat_detection.pca')
-@patch('threat_detection.model')
-@patch('threat_detection.requests.post')
+@patch('Threat_detection.scaler')
+@patch('Threat_detection.pca')
+@patch('Threat_detection.model')
+@patch('Threat_detection.requests.post')
 def test_detect_threat_once(mock_post, mock_model, mock_pca, mock_scaler):
     # Mock behavior
     mock_scaler.transform.return_value = [[0]*6]
