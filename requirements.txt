@@ -6,3 +6,5 @@ scapy
 psutil
 pytest
 requests
+scikit-learn
+
