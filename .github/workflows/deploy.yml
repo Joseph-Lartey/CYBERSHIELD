@@ -3,7 +3,7 @@ name: CyberShield Backend CI Testing
 on:
   push:
     branches:
-      main, - cicd-branch
+    main
 
 jobs:
   run-tests:
