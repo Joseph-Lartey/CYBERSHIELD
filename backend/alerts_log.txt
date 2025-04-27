@@ -5949,3 +5949,4 @@
 {"timestamp": "2025-04-26T23:54:34.973090", "ip": "127.0.0.1", "source": "chrome", "severity": "High", "probability": 0.92, "features": {}, "processes": ["notepad.exe"]}
 {"timestamp": "2025-04-26T23:57:23.117211", "ip": "127.0.0.1", "source": "chrome", "severity": "High", "probability": 0.92, "features": {}, "processes": ["notepad.exe"]}
 {"timestamp": "2025-04-27T00:21:05.115520", "ip": "127.0.0.1", "source": "chrome", "severity": "High", "probability": 0.92, "features": {}, "processes": ["notepad.exe"]}
+{"timestamp": "2025-04-27T00:44:34.649967", "ip": "127.0.0.1", "source": "chrome", "severity": "High", "probability": 0.92, "features": {}, "processes": ["notepad.exe"]}

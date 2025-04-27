@@ -1,0 +1,8 @@
+Flask
+flask-cors
+pandas
+joblib
+scapy
+psutil
+pytest
+requests
