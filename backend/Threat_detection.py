@@ -112,10 +112,15 @@ def detect_threat(packet):
         print("✅ Packet is safe.")
 
 # Start Packet Sniffing
-iface_name = "Wi-Fi"
-print(f"🔍 Starting packet sniffing on interface: {iface_name}")
-sniff(iface=iface_name, prn=detect_threat, store=False)
+# iface_name = "Wi-Fi"
+# print(f"🔍 Starting packet sniffing on interface: {iface_name}")
+# sniff(iface=iface_name, prn=detect_threat, store=False)
 
+#made this change because of a cicd error
+if __name__ == "__main__":
+    iface_name = "Wi-Fi"
+    print(f"🔍 Starting packet sniffing on interface: {iface_name}")
+    sniff(iface=iface_name, prn=detect_threat, store=False)
 
 
 
