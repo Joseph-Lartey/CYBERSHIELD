@@ -162,3 +162,11 @@
 {"ip": "http://www.malware.com/", "action": "Tab closed", "severity": "High", "time": "2025-04-22T02:21:37.394Z"}
 {"ip": "https://www.google.com/search?q=www.malwarebytes&oq=www.malware&pf=cs&sourceid=chrome&ie=UTF-8", "action": "Tab closed", "severity": "High", "time": "2025-04-22T02:21:50.384Z"}
 {"ip": "http://www.malware.com/", "action": "Tab closed", "severity": "High", "time": "2025-04-22T02:22:20.393Z"}
+{"action": "Blocked IP", "ip": "127.0.0.1", "timestamp": "2025-04-25T14:30:00"}
+{"action": "Blocked IP", "ip": "127.0.0.1", "timestamp": "2025-04-25T14:30:00"}
+{"action": "Blocked IP", "ip": "127.0.0.1", "timestamp": "2025-04-25T14:30:00"}
+{"action": "Blocked IP", "ip": "127.0.0.1", "timestamp": "2025-04-25T14:30:00"}
+{"action": "Blocked IP", "ip": "127.0.0.1", "timestamp": "2025-04-25T14:30:00"}
+{"action": "Blocked IP", "ip": "127.0.0.1", "timestamp": "2025-04-25T14:30:00"}
+{"action": "Blocked IP", "ip": "127.0.0.1", "timestamp": "2025-04-25T14:30:00"}
+{"action": "Blocked IP", "ip": "127.0.0.1", "timestamp": "2025-04-25T14:30:00"}

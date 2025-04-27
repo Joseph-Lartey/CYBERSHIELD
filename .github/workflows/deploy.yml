@@ -1,30 +1,30 @@
-name: Deploy CyberShield Backend to EC2
-
+name: CyberShield Backend CI Testing
 
 on:
   push:
     branches:
-      - main, cicd-branch
+    main
 
 jobs:
-  deploy:
+  run-tests:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
-    - name: Set up SSH
-      uses: webfactory/ssh-agent@v0.7.0
+    - name: Set up Python
+      uses: actions/setup-python@v5
       with:
-        ssh-private-key: ${{ secrets.SSH_KEY }}
+        python-version: '3.12'
 
-    - name: Deploy to EC2
+    - name: Install dependencies
       run: |
-        ssh -o StrictHostKeyChecking=no ec2-user@16.171.55.86 << 'EOF'
-          cd ~/CYBERSHIELD/backend
-          pkill -f alert_service.py || true
-          pkill -f detection_api.py || true
-          nohup python3 alert_service.py > alert.log 2>&1 &
-          nohup python3 detection_api.py > detect.log 2>&1 &
-        EOF
+        python -m pip install --upgrade pip
+        pip install pytest
+        pip install -r requirements.txt
+
+    - name: Run tests
+      run: |
+        cd backend
+        pytest tests/
