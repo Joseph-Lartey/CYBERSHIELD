@@ -5943,3 +5943,9 @@
 {"timestamp": "2025-04-22T02:22:19.898952", "ip": "http://www.malware.com/", "source": "extension", "severity": "High", "probability": 0.9, "features": {"network_threats": 5, "network_dns": 1, "network_http": 1, "network_connections": 1, "apis": 10, "registry_total": 5}, "processes": []}
 {"timestamp": "2025-04-25T02:09:12.757048", "ip": "127.0.0.1", "source": "chrome", "severity": "High", "probability": 0.92, "features": {}, "processes": ["notepad.exe"]}
 {"timestamp": "2025-04-25T02:09:43.891521", "ip": "127.0.0.1", "source": "chrome", "severity": "High", "probability": 0.92, "features": {}, "processes": ["notepad.exe"]}
+{"timestamp": "2025-04-26T23:46:37.031349", "ip": "127.0.0.1", "source": "chrome", "severity": "High", "probability": 0.92, "features": {}, "processes": ["notepad.exe"]}
+{"timestamp": "2025-04-26T23:50:04.799075", "ip": "127.0.0.1", "source": "chrome", "severity": "High", "probability": 0.92, "features": {}, "processes": ["notepad.exe"]}
+{"timestamp": "2025-04-26T23:52:30.248009", "ip": "127.0.0.1", "source": "chrome", "severity": "High", "probability": 0.92, "features": {}, "processes": ["notepad.exe"]}
+{"timestamp": "2025-04-26T23:54:34.973090", "ip": "127.0.0.1", "source": "chrome", "severity": "High", "probability": 0.92, "features": {}, "processes": ["notepad.exe"]}
+{"timestamp": "2025-04-26T23:57:23.117211", "ip": "127.0.0.1", "source": "chrome", "severity": "High", "probability": 0.92, "features": {}, "processes": ["notepad.exe"]}
+{"timestamp": "2025-04-27T00:21:05.115520", "ip": "127.0.0.1", "source": "chrome", "severity": "High", "probability": 0.92, "features": {}, "processes": ["notepad.exe"]}
