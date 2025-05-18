@@ -116,12 +116,12 @@ def detect_threat(packet):
 # print(f"🔍 Starting packet sniffing on interface: {iface_name}")
 # sniff(iface=iface_name, prn=detect_threat, store=False)
 
-<<<<<<< HEAD
+
 #made this change because of a cicd error
-if __name__ == "__main__":
-    iface_name = "Wi-Fi"
-    print(f"🔍 Starting packet sniffing on interface: {iface_name}")
-    sniff(iface=iface_name, prn=detect_threat, store=False)
+# if __name__ == "__main__":
+#     iface_name = "Wi-Fi"
+#     print(f"🔍 Starting packet sniffing on interface: {iface_name}")
+#     sniff(iface=iface_name, prn=detect_threat, store=False)
 
 
 
@@ -663,5 +663,4 @@ if __name__ == "__main__":
 
 # print(f"🔍 Starting CyberShield Threat Detection on interface: {iface_name}")
 # sniff(iface=iface_name, prn=detect_threat, store=False)
-=======
->>>>>>> fcf448b (clean_up code and work on Readme)
+
