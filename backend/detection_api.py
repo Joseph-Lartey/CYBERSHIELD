@@ -24,12 +24,12 @@ def analyze_packet():
     is_malware = "malware" in url or "fake" in url
     
     features = {
-        "network_threats": 5 if is_malware else 0,  # Increased weight for malware detection
+        "network_threats": 5 if is_malware else 0,  
         "network_dns": 1,
         "network_http": 1 if "http" in url else 0,
         "network_connections": 1,
         "apis": 10,
-        "registry_total": 5 if is_malware else 0  # Additional signal for suspicious domains
+        "registry_total": 5 if is_malware else 0  
     }
 
     df = pd.DataFrame([features])
@@ -44,7 +44,7 @@ def analyze_packet():
     
     # Force high probability for known malware sites for testing
     if is_malware:
-        prob = max(prob, 0.90)  # Ensure it gets classified as high severity
+        prob = max(prob, 0.90)  
 
     print(f"URL: {url}, Probability: {prob}, Is Malware: {is_malware}")
 

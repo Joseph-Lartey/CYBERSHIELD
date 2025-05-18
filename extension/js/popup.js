@@ -68,6 +68,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ✅ Export logs (🛡️ UPDATED to cybershield.ink)
   exportLogs.addEventListener("click", () => {
-    chrome.tabs.create({ url: "https://cybershield.ink/logs" }); // 🔥 UPDATED
+    chrome.tabs.create({ url: "https://cybershield.ink/logs" }); 
   });
 });
