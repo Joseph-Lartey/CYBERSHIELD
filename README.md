@@ -14,8 +14,10 @@ CyberShield is an AI-powered browser-based Intrusion Detection System (IDS) desi
 - ☁️ Hosted on AWS EC2 with Gunicorn + systemd
 
 # System Architecture
-![System Architecture](extension/assets/architecture.png)
-*Fig 1: Updated Microservices Architecture of CyberShield*
+<img src="extension/assets/architecture.png" alt="System Architecture" width="700"/>
+
+<p align="center"><em>Fig 1: Updated Microservices Architecture of CyberShield</em></p>
+
 
 # Tech Stack 
 - **Frontend:** Chrome Extension (HTML, CSS, JS)
@@ -57,8 +59,15 @@ GitHub Actions workflow (`.github/workflows/deploy.yml`) ensures automated deplo
 - 🔒 Backend access restricted to EC2 only via private key
 
 # Screenshot
-![Notifications UI](extension/assets/notify.png)
-![Mian UI](extension/assets/UI.png)
+### Notification
+<img src="extension/assets/UI.png" alt="Extension Popup UI" width="400"/>
+
+<p align="center"><em>Fig 2: CyberShield Browser Extension Popup</em></p>
+
+### Extension UI
+<img src="extension/assets/UI.png" alt="Extension Popup UI" width="400"/>
+
+<p align="center"><em>Fig 2: CyberShield Browser Extension Popup</em></p>
 
 ## 👥 Contributors
 
