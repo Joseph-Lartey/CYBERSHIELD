@@ -14,7 +14,7 @@ CyberShield is an AI-powered browser-based Intrusion Detection System (IDS) desi
 - ☁️ Hosted on AWS EC2 with Gunicorn + systemd
 
 # System Architecture
-![System Architecture](assets/architecture.png)
+![System Architecture](extension/assets/architecture.png)
 *Fig 1: Updated Microservices Architecture of CyberShield*
 
 # Tech Stack 
@@ -57,8 +57,8 @@ GitHub Actions workflow (`.github/workflows/deploy.yml`) ensures automated deplo
 - 🔒 Backend access restricted to EC2 only via private key
 
 # Screenshot
-![Notifications UI](assets/notify.png)
-![Mian UI](assets/UI.png)
+![Notifications UI](extension/assets/notify.png)
+![Mian UI](extension/assets/UI.png)
 
 ## 👥 Contributors
 
