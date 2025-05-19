@@ -60,7 +60,7 @@ GitHub Actions workflow (`.github/workflows/deploy.yml`) ensures automated deplo
 
 # Screenshot
 ### Notification
-<img src="extension/assets/UI.png" alt="Extension Popup UI" width="400"/>
+<img src="extension/assets/notify.png" alt="Extension Popup UI" width="400"/>
 
 <p align="center"><em>Fig 2: CyberShield Browser Extension Popup</em></p>
 
